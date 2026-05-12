@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JNCIE-SP — Cheat Sheet & Troubleshooting Mindmap</title>
+<style>
+:root {
+  --bg: #0d1117;
+  --bg2: #161b22;
+  --bg3: #21262d;
+  --fg: #e6edf3;
+  --fg2: #8b949e;
+  --accent: #58a6ff;
+  --accent2: #f0883e;
+  --green: #3fb950;
+  --red: #f85149;
+  --yellow: #d29922;
+  --purple: #a371f7;
+  --border: #30363d;
+  --code-bg: #010409;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+  padding: 20px;
+}
+.container { max-width: 1400px; margin: 0 auto; }
+header {
+  background: linear-gradient(135deg, #1a3a5c 0%, #2d5a8c 100%);
+  padding: 30px 25px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border: 1px solid var(--border);
+}
+header h1 { font-size: 2em; margin-bottom: 8px; }
+header p { color: var(--fg2); }
+header .subtitle { color: var(--accent); font-weight: 600; }
+.tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+.tab {
+  padding: 10px 18px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  color: var(--fg2);
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.tab:hover { background: var(--bg3); color: var(--fg); }
+.tab.active {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.domain-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+  gap: 18px;
+}
+.domain-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.domain-card:hover { border-color: var(--accent); }
+.domain-header {
+  padding: 14px 18px;
+  background: var(--bg3);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+.domain-header h3 { font-size: 1.05em; color: var(--accent); }
+.domain-header .arrow {
+  transition: transform 0.2s;
+  color: var(--fg2);
+}
+.domain-card.expanded .arrow { transform: rotate(90deg); }
+.domain-body { display: none; padding: 16px 18px; }
+.domain-card.expanded .domain-body { display: block; }
+.keywords {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border);
+}
+.keyword {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 0.78em;
+  color: var(--fg2);
+}
+.section { margin-bottom: 14px; }
+.section h4 {
+  font-size: 0.78em;
+  color: var(--accent2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+.section.piege h4 { color: var(--red); }
+.section.trick h4 { color: var(--yellow); }
+.section.verify h4 { color: var(--green); }
+.section ul { list-style: none; padding-left: 0; }
+.section li {
+  padding: 4px 0;
+  font-size: 0.88em;
+  color: var(--fg);
+}
+.section li strong { color: var(--accent); }
+.section li code {
+  background: var(--code-bg);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: "Monaco", "Consolas", monospace;
+  font-size: 0.88em;
+  color: var(--purple);
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 8px 0;
+  font-family: "Monaco", "Consolas", monospace;
+  font-size: 0.8em;
+  color: #c9d1d9;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+.piege-box {
+  background: rgba(248, 81, 73, 0.08);
+  border-left: 3px solid var(--red);
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85em;
+}
+.trick-box {
+  background: rgba(210, 153, 34, 0.08);
+  border-left: 3px solid var(--yellow);
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85em;
+}
+.verify-box {
+  background: rgba(63, 185, 80, 0.08);
+  border-left: 3px solid var(--green);
+  padding: 8px 12px;
+  margin: 6px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 0.85em;
+}
+.controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+button {
+  padding: 6px 14px;
+  background: var(--bg2);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85em;
+}
+button:hover { background: var(--bg3); border-color: var(--accent); }
+.flow-arrow { color: var(--accent2); font-weight: bold; }
+footer {
+  margin-top: 40px;
+  padding: 20px;
+  text-align: center;
+  color: var(--fg2);
+  font-size: 0.85em;
+  border-top: 1px solid var(--border);
+}
+@media print {
+  body { background: white; color: black; }
+  .domain-card { background: white; border-color: #999; page-break-inside: avoid; }
+  .domain-body { display: block !important; }
+  .tabs, .controls { display: none; }
+  .tab-content { display: block !important; }
+  pre { background: #f6f8fa; color: black; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+<h1>🎯 JNCIE-SP — Cheat Sheet & Troubleshooting Mindmap</h1>
+<p class="subtitle">Lab JNCIE-SP-962 — Référence pratique avec pièges du terrain</p>
+<p>15 domaines · Verification commands · Tricks · Pièges identifiés</p>
+</header>
+
+<div class="controls">
+<button onclick="openAll()">Tout ouvrir</button>
+<button onclick="closeAll()">Tout fermer</button>
+<button onclick="window.print()">Imprimer / PDF</button>
+</div>
+
+<div class="tabs">
+<div class="tab active" data-tab="igp">IGP (IS-IS / OSPF)</div>
+<div class="tab" data-tab="bgp">BGP (iBGP / RR / eBGP)</div>
+<div class="tab" data-tab="mpls">MPLS (RSVP / LDP / SR)</div>
+<div class="tab" data-tab="vpn">VPN (L3VPN / VPLS / EVPN)</div>
+<div class="tab" data-tab="ipv6">IPv6 / 6PE / Inter-AS</div>
+<div class="tab" data-tab="cos">CoS / Sécurité / Système</div>
+<div class="tab" data-tab="ops">Tricks Junos & EVE-NG</div>
+</div>
+
+<!-- ===========  IGP TAB =========== -->
+<div class="tab-content active" data-content="igp">
+<div class="domain-grid">
+
+<div class="domain-card expanded">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>IS-IS — Adjacences & Troubleshooting</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">family iso</span>
+<span class="keyword">NET unique</span>
+<span class="keyword">MTU</span>
+<span class="keyword">L1/L2</span>
+<span class="keyword">overload</span>
+<span class="keyword">BFD</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts clés</h4>
+<ul>
+<li><strong>NET</strong> = <code>49.AREA.SYSTEM-ID.00</code> — system-id unique par routeur</li>
+<li><strong>family iso</strong> requise sur l'interface ET sur lo0.0 pour activer IS-IS</li>
+<li><strong>Niveaux</strong> : L1=intra-area, L2=inter-area, AS 65001 typique = L2 only</li>
+<li><strong>Métriques</strong> : wide=jusqu'à 16.7M, narrow=63 max (legacy)</li>
+<li><strong>Adjacence</strong> : NEIGHBOR_DOWN → INITIALIZING → UP</li>
+</ul>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications systématiques</h4>
+<pre>show isis adjacency
+show isis interface
+show isis database
+show route 10.220.1.0/24 protocol isis | match /32
+show isis statistics</pre>
+</div>
+
+<div class="section piege">
+<h4>⚠️ Pièges identifiés lab</h4>
+<div class="piege-box">
+<strong>Piège 1 — family iso oublié</strong><br>
+RR1 em2 avait <code>family inet</code> mais PAS <code>family iso</code> → 0 adjacence.<br>
+<em>Diagnostic</em> : adjacence absente même avec interfaces UP.
+</div>
+<div class="piege-box">
+<strong>Piège 2 — NET dupliqué</strong><br>
+PE7 utilisait NET de P4 (<code>...1004.00</code>) → adjacences instables.<br>
+<em>Fix</em> : <code>rename ...1004.00 to ...1007.00</code>
+</div>
+<div class="piege-box">
+<strong>Piège 3 — MTU mismatch</strong><br>
+P5 avait MTU 1500 hardcodé → IS-IS PDU LSP rejetés (>1492 octets).<br>
+<em>Fix</em> : <code>delete interfaces ge-X mtu 1500</code> (revient à MTU défaut 1514).
+</div>
+</div>
+
+<div class="section trick">
+<h4>💡 Tricks essentiels</h4>
+<div class="trick-box">
+<strong>Catch-all "toutes adjacences UP"</strong> = trouver TOUS les blockers, pas juste ceux du PDF. La solution officielle = "principaux fixes" — pas exhaustive.
+</div>
+<div class="trick-box">
+<strong>Vérification cascade</strong> : si adjacences IS-IS down → BGP ne s'établit pas → L3VPN/EVPN HS → cascade de pertes (20+ pts).
+</div>
+<div class="trick-box">
+<strong>passive sur lo0.0</strong> = annonce le préfixe sans former d'adjacence (pas de hellos sur lo0).
+</div>
+</div>
+
+<div class="section">
+<h4>🔧 Features avancées</h4>
+<pre># Overload bit (pas de transit X secondes au boot)
+set protocols isis overload timeout 600
+
+# BFD sub-second sans toucher hellos
+set protocols isis interface ge-X.0 bfd-liveness-detection minimum-interval 500
+
+# LDP synchronization (attendre LDP avant d'utiliser le lien)
+set protocols isis interface ge-X.0 ldp-synchronization
+
+# No IPv6 routing dans IS-IS (cas 6PE)
+set protocols isis no-ipv6-routing
+
+# Export policy (annoncer uniquement /32)
+set protocols isis export isis-export</pre>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>OSPF — Concepts SP & Inter-AS</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">interface-type p2p</span>
+<span class="keyword">area 0</span>
+<span class="keyword">VRF</span>
+<span class="keyword">export</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts clés</h4>
+<ul>
+<li><strong>interface-type p2p</strong> sur /31 (sinon broadcast = mismatch)</li>
+<li><strong>LSA types</strong> : 1=Router, 2=Network, 3=Summary, 5=External, 7=NSSA</li>
+<li><strong>DR/BDR</strong> : priorité (défaut 128) puis Router ID</li>
+<li><strong>PE-CE protocol</strong> : OSPF dans VRF → redistribute en BGP VPNv4</li>
+</ul>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications</h4>
+<pre>show ospf neighbor instance &lt;VRF&gt;
+show ospf interface instance &lt;VRF&gt;
+show ospf database
+run show route 10.10.X.X table &lt;VRF&gt;.inet.0</pre>
+</div>
+
+<div class="section piege">
+<h4>⚠️ Piège classique OSPF p2p</h4>
+<div class="piege-box">
+PE3 OSPF dans VRF BLUE n'avait PAS <code>interface-type p2p</code> → défaut = broadcast.<br>
+CE11 config avec <code>interface-type p2p</code> → MISMATCH → pas d'adjacence.<br>
+<em>Fix S3.1</em> : ajouter <code>interface-type p2p</code> côté PE3.
+</div>
+</div>
+
+<div class="section trick">
+<h4>💡 Tricks OSPF PE-CE</h4>
+<div class="trick-box">
+<strong>Redistribute OSPF → BGP VPNv4</strong> (S3.1) :
+<pre>set policy-options policy-statement send-blue from protocol bgp
+set policy-options policy-statement send-blue then accept
+set routing-instances BLUE protocols ospf export send-blue</pre>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ===========  BGP TAB =========== -->
+<div class="tab-content" data-content="bgp">
+<div class="domain-grid">
+
+<div class="domain-card expanded">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>BGP — Diagnostic States (LE TRICK ESSENTIEL)</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">Idle</span>
+<span class="keyword">Connect</span>
+<span class="keyword">Active</span>
+<span class="keyword">Established</span>
+</div>
+
+<div class="section trick">
+<h4>💡 Lecture des états BGP — diagnostic immédiat</h4>
+<div class="trick-box">
+<strong>Idle</strong> → BGP désactivé OU pas de route vers neighbor
+</div>
+<div class="trick-box">
+<strong>Connect</strong> → BGP local tente OPEN, attente du SYN-ACK<br>
+<span class="flow-arrow">→</span> Check : route vers neighbor, source-address, filtre lo0 (RE-protect)
+</div>
+<div class="trick-box">
+<strong>Active</strong> → TCP s'établit mais OPEN pas validé<br>
+<span class="flow-arrow">→</span> Check : ASN match, multihop si requis, TCP-AO keys
+</div>
+<div class="trick-box">
+<strong>Established</strong> → session OK, échange UPDATES
+</div>
+</div>
+
+<div class="section verify">
+<h4>✅ Diagnostic flow BGP</h4>
+<pre>1. show bgp summary                    # état global
+2. show bgp neighbor X.X.X.X           # détails session
+3. ping X.X.X.X source LOCAL           # L3 connectivity
+4. show route X.X.X.X                  # IGP résolution
+5. show route table inet.0 X.X.X.X     # routing vers neighbor
+6. show route table inet.3 X.X.X.X     # MPLS pour iBGP avec NHS
+7. show route table bgp.l3vpn.0 hidden # routes hidden (NH unresolvable)</pre>
+</div>
+
+<div class="section piege">
+<h4>⚠️ Pièges Connect / Active fréquents</h4>
+<div class="piege-box">
+<strong>Filtre RE-protect bloque BGP</strong><br>
+S1.1 utilise prefix-list <code>BGP-Allow-VRF</code> qui peut être vide.<br>
+<em>Fix</em> : <code>set policy-options prefix-list BGP-Allow-VRF apply-path "routing-instances &lt;*&gt; protocols bgp group &lt;*&gt; neighbor &lt;*&gt;"</code>
+</div>
+<div class="piege-box">
+<strong>Layer 2 cassé en EVE-NG</strong><br>
+Interface UP/UP mais ping fail, ARP vide → câblage EVE-NG sur mauvais port.<br>
+<em>vMX mapping</em> : em2=ge-0/0/0, em4=ge-0/0/2, em6=ge-0/0/4
+</div>
+<div class="piege-box">
+<strong>AS mismatch</strong><br>
+peer-as côté A ≠ ASN configuré côté B → Active.<br>
+<em>Exemple lab</em> : PE6 baseline <code>peer-as 64588</code> mais CE8 = AS 64533.
+</div>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>iBGP / Route Reflectors</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">cluster-id</span>
+<span class="keyword">add-path</span>
+<span class="keyword">resolution-ribs</span>
+<span class="keyword">allow</span>
+<span class="keyword">families</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts clés</h4>
+<ul>
+<li><strong>Cluster-ID</strong> = identifiant RR pour détection loops (ORIGINATOR_ID + CLUSTER_LIST)</li>
+<li><strong>allow X.X.X.0/24</strong> = peering dynamique (clients dans subnet)</li>
+<li><strong>RR sans MPLS</strong> = doit résoudre next-hops VPN — 2 méthodes (legacy / moderne)</li>
+<li><strong>add-path</strong> RFC 7911 = multiple chemins par préfixe</li>
+</ul>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications RR</h4>
+<pre>show bgp summary
+show bgp neighbor X.X.X.X | match "Type|Cluster|Add Path"
+show route table bgp.l3vpn.0
+show route table bgp.evpn.0
+show route advertising-protocol bgp X.X.X.X
+show route receive-protocol bgp X.X.X.X</pre>
+</div>
+
+<div class="section trick">
+<h4>💡 RR sans MPLS — Legacy vs Moderne</h4>
+<div class="trick-box">
+<strong>Legacy (hack)</strong> :
+<pre>set routing-options rib inet.3 static route 0/0 discard</pre>
+Fonctionne mais pas RFC. Crée artificiellement une "route MPLS".
+</div>
+<div class="trick-box">
+<strong>Moderne (S2.8)</strong> :
+<pre>set routing-options resolution rib bgp.l3vpn.0 resolution-ribs inet.0
+set routing-options resolution rib bgp.evpn.0 resolution-ribs inet.0
+set routing-options resolution rib bgp.mvpn.0 resolution-ribs inet.0</pre>
+Propre. Dit explicitement de résoudre via inet.0.
+</div>
+</div>
+
+<div class="section">
+<h4>🔧 Add-path configuration (S2.7)</h4>
+<pre># Côté RR
+set protocols bgp group rrc neighbor X.X.X.X family inet unicast add-path receive
+set protocols bgp group rrc neighbor X.X.X.X family inet unicast add-path send path-count 2
+
+# Côté client (réciproque)
+set protocols bgp group rr neighbor X.X.X.X family inet unicast add-path receive
+set protocols bgp group rr neighbor X.X.X.X family inet unicast add-path send path-count 2
+
+# Vérif
+show bgp neighbor X.X.X.X | match "multiple paths"
+# Attendu : "NLRI's for which peer can send and receive multiple paths: inet-unicast"</pre>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>eBGP & Policies</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">prefix-limit</span>
+<span class="keyword">communities</span>
+<span class="keyword">as-override</span>
+<span class="keyword">replace pattern</span>
+<span class="keyword">local-pref</span>
+</div>
+
+<div class="section">
+<h4>📋 Best-path BGP (ordre)</h4>
+<ul>
+<li>1. <strong>Weight</strong> (Cisco) / Local-Pref+ (Junos)</li>
+<li>2. <strong>AS_PATH</strong> shorter</li>
+<li>3. <strong>Origin</strong> IGP &lt; EGP &lt; Incomplete</li>
+<li>4. <strong>MED</strong> lower</li>
+<li>5. <strong>eBGP &gt; iBGP</strong></li>
+<li>6. <strong>IGP metric</strong> to next-hop</li>
+<li>7. <strong>Router-ID</strong> lower</li>
+</ul>
+</div>
+
+<div class="section trick">
+<h4>💡 Tricks eBGP</h4>
+<div class="trick-box">
+<strong>prefix-limit teardown</strong> (S2.6) — ferme la session au dépassement :
+<pre>set protocols bgp group transit family inet unicast prefix-limit maximum 1000
+set protocols bgp group transit family inet unicast prefix-limit teardown</pre>
+</div>
+<div class="trick-box">
+<strong>as-override</strong> (S2.9) — résout les boucles d'AS pour CEs partageant le même AS :
+<pre>set protocols bgp group CEX as-override</pre>
+</div>
+<div class="trick-box">
+<strong>replace pattern</strong> (S2.12) — rename une community dans une policy :
+<pre>edit policy-options policy-statement REJECT_BAD_COMMUNITIES
+replace pattern BAD_COMMUNITIES with FROM_DATA_CENTER</pre>
+</div>
+<div class="trick-box">
+<strong>Exit point forcé</strong> (S2.10) — augmenter local-pref :
+<pre>set policy-options policy-statement nhs term 1 then local-preference 200</pre>
+</div>
+</div>
+
+<div class="section">
+<h4>🔧 Routes hidden — diagnostic</h4>
+<pre>show route table bgp.l3vpn.0 hidden extensive
+# Cherche : "Unusable" "rejected by import" "AS loop" "MED inferior"
+
+# Causes :
+# 1. Next-hop unresolvable → S2.8 (resolution-ribs)
+# 2. Import policy reject → adapter policy
+# 3. AS-PATH loop → as-override ou as-loops N
+# 4. MED inferior → comportement normal</pre>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>TCP-AO (Authentification BGP)</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">aes-128-cmac-96</span>
+<span class="keyword">send-id</span>
+<span class="keyword">recv-id</span>
+<span class="keyword">keychain</span>
+</div>
+
+<div class="section piege">
+<h4>⚠️ POINT CRITIQUE — send-id / recv-id</h4>
+<div class="piege-box">
+<strong>Asymétriques entre les 2 routeurs !</strong><br>
+RR1 : <code>send-id=3, recv-id=8</code><br>
+PE3 : <code>send-id=8, recv-id=3</code> (INVERSÉS)<br>
+<em>Rule</em> : send-id côté A = recv-id côté B.<br>
+Si pas symétrique → session jamais Established.
+</div>
+</div>
+
+<div class="section">
+<h4>🔧 Configuration TCP-AO</h4>
+<pre>set security authentication-key-chains key-chain IBGP-AUTH key 0 secret jncie123
+set security authentication-key-chains key-chain IBGP-AUTH key 0 start-time "2020-10-10.03:00:00 +0000"
+set security authentication-key-chains key-chain IBGP-AUTH key 0 algorithm ao
+set security authentication-key-chains key-chain IBGP-AUTH key 0 ao-attribute send-id 3
+set security authentication-key-chains key-chain IBGP-AUTH key 0 ao-attribute recv-id 8
+set security authentication-key-chains key-chain IBGP-AUTH key 0 ao-attribute tcp-ao-option enabled
+set security authentication-key-chains key-chain IBGP-AUTH key 0 ao-attribute cryptographic-algorithm aes-128-cmac-96
+set protocols bgp group rrc neighbor X.X.X.X authentication-key-chain IBGP-AUTH
+set protocols bgp group rrc neighbor X.X.X.X authentication-algorithm ao</pre>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérification</h4>
+<pre>show security keychain
+show bgp neighbor X.X.X.X | match "Authentication"
+# Attendu : "Authentication key chain : IBGP-AUTH"
+#          "Authentication algorithm : ao"</pre>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ===========  MPLS TAB =========== -->
+<div class="tab-content" data-content="mpls">
+<div class="domain-grid">
+
+<div class="domain-card expanded">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>RSVP-TE / MPLS</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">LSP</span>
+<span class="keyword">admin-groups</span>
+<span class="keyword">CSPF</span>
+<span class="keyword">node-link-protection</span>
+<span class="keyword">path strict</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts clés RSVP-TE</h4>
+<ul>
+<li><strong>LSP</strong> = Label Switched Path — chemin MPLS avec réservation BW possible</li>
+<li><strong>CSPF</strong> = Constrained SPF — calcule chemin selon contraintes</li>
+<li><strong>admin-groups</strong> = "couleurs" des liens (BLUE, GREEN, etc.)</li>
+<li><strong>FRR</strong> link-protection vs node-link-protection (NLP recommandé)</li>
+<li><strong>inet.3</strong> = table des LSPs résolus pour next-hop BGP</li>
+</ul>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications</h4>
+<pre>show mpls lsp                          # tous LSP UP ?
+show mpls lsp name &lt;NAME&gt; detail        # détails 1 LSP
+show mpls lsp name &lt;NAME&gt; extensive | match Node/Link
+show ted database                       # TED
+show ted database admin-groups          # admin-groups visibles
+show route table inet.3                 # NEXT_HOP via LSP
+show rsvp session                       # sessions actives
+show mpls lsp bypass                    # bypass FRR</pre>
+</div>
+
+<div class="section trick">
+<h4>💡 Tricks RSVP</h4>
+<div class="trick-box">
+<strong>admin-groups</strong> (S2.14) — 3 variantes :
+<pre>include-any BLUE    # au moins un lien BLUE
+include-all "B G"   # ET BLUE ET GREEN
+exclude RED         # bannir RED</pre>
+</div>
+<div class="trick-box">
+<strong>Path strict</strong> (S3.2) — forcer hop-by-hop :
+<pre>set protocols mpls path BLUE-PATH 10.220.1.7 strict
+set protocols mpls path BLUE-PATH 10.220.1.5 strict
+set protocols mpls path BLUE-PATH 10.220.1.3 strict</pre>
+</div>
+<div class="trick-box">
+<strong>node-link-protection</strong> (S2.15) — protège lien + nœud aval :
+<pre>set protocols mpls label-switched-path LSP_X node-link-protection
+# Vérif : "Node/Link protection desired"</pre>
+</div>
+</div>
+
+<div class="section piege">
+<h4>⚠️ Pièges MPLS</h4>
+<div class="piege-box">
+<strong>admin-groups manquants</strong> sur certains liens du chemin BLUE → CSPF échoue.<br>
+<em>Pre-req</em> : <code>set protocols mpls admin-groups BLUE 1</code> + <code>interface X admin-group BLUE</code>
+</div>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>LDP — Sync & Downstream</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">ldp-synchronization</span>
+<span class="keyword">egress-policy</span>
+<span class="keyword">FEC</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts LDP</h4>
+<ul>
+<li>LDP distribue labels basé sur IGP (next-hop = same FEC)</li>
+<li>Par défaut, LSR annonce seulement son propre lo0 en FEC</li>
+<li>egress-policy permet d'annoncer d'autres loopbacks</li>
+</ul>
+</div>
+
+<div class="section trick">
+<h4>💡 IS-IS LDP synchronization (S2.13)</h4>
+<div class="trick-box">
+Sans sync : link UP → IS-IS converge en 6s, LDP en 30s → <strong>trou MPLS 30s</strong>.<br>
+Avec sync : IS-IS annonce métrique infinie tant que LDP pas prêt → traffic reste sur backup.
+<pre>set protocols isis interface ge-X.0 ldp-synchronization
+
+# Optionnel : hold-time pour cas LDP foire
+set protocols isis interface ge-X.0 ldp-synchronization hold-time 60</pre>
+</div>
+</div>
+
+<div class="section">
+<h4>🔧 LDP downstream egress-policy (S2.17)</h4>
+<pre>set policy-options policy-statement ldp-routes term 1 from route-filter 10.220.1.0/24 prefix-length-range /32-/32
+set policy-options policy-statement ldp-routes then accept
+set protocols ldp egress-policy ldp-routes</pre>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications</h4>
+<pre>show ldp neighbor
+show ldp session
+show ldp database
+show isis interface detail | match "LDP sync"
+show route table inet.3 protocol ldp</pre>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>Segment Routing (SR-MPLS)</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">source-routing-path</span>
+<span class="keyword">segment-list</span>
+<span class="keyword">SID</span>
+<span class="keyword">spring-te</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts SR</h4>
+<ul>
+<li>Segment Routing = SIDs encodés dans stack labels, pas de state au cœur</li>
+<li>SR-TE policy = head-end + destination + segment-list</li>
+<li>Avantage : pas de RSVP state par LSP, scalable</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>🔧 SR-MPLS policy (S2.16)</h4>
+<pre>set protocols source-packet-routing source-routing-path LSP_PE7 to 10.220.1.7
+set protocols source-packet-routing source-routing-path LSP_PE7 primary SEGMENT_LIST_TO_PE7
+set protocols isis traffic-engineering l3-unicast-topology
+set protocols isis traffic-engineering advertisement always</pre>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications</h4>
+<pre>show spring-traffic-engineering lsp name LSP_PE7 detail
+show route table inet.3 protocol spring-te
+show isis adjacency
+show isis database extensive | match SID</pre>
+</div>
+
+<div class="section trick">
+<h4>💡 IS-IS TE advertisement</h4>
+<div class="trick-box">
+<code>advertisement always</code> force IS-IS à annoncer SIDs même sans demande TE → indispensable pour head-end de résoudre les SIDs des hops.
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ===========  VPN TAB =========== -->
+<div class="tab-content" data-content="vpn">
+<div class="domain-grid">
+
+<div class="domain-card expanded">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>L3VPN — VRF Hub-and-Spoke</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">RD</span>
+<span class="keyword">RT</span>
+<span class="keyword">vrf-target</span>
+<span class="keyword">vrf-import/export</span>
+<span class="keyword">vrf-table-label</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts L3VPN</h4>
+<ul>
+<li><strong>RD</strong> (Route Distinguisher) — 8 octets, rend les VPN routes uniques</li>
+<li><strong>RT</strong> (Route Target) — community étendue, contrôle import/export</li>
+<li><strong>vrf-target</strong> = shortcut pour RT import+export même valeur</li>
+<li><strong>vrf-import/export</strong> = policies fines (cas H&S)</li>
+<li><strong>vrf-table-label</strong> = IP-lookup sur le label VPN reçu</li>
+</ul>
+</div>
+
+<div class="section trick">
+<h4>💡 Hub-and-Spoke avec 2 RT (S3.3)</h4>
+<div class="trick-box">
+RT 1:1 = Spoke→Hub<br>
+RT 1:2 = Hub→Spoke<br>
+Spokes : <code>import target:1:2, export target:1:1</code> (importent du Hub, exportent au Hub)<br>
+Hub : <code>import target:1:1, export target:1:2</code> (importe des Spokes, exporte aux Spokes)<br>
+<em>Aucun spoke n'importe 1:1 → ils ne se voient pas entre eux</em>
+</div>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications L3VPN</h4>
+<pre>show route table &lt;VRF&gt;.inet.0
+show route table bgp.l3vpn.0
+show route table bgp.l3vpn.0 hidden
+show route advertising-protocol bgp X.X.X.X table bgp.l3vpn.0
+show route extensive | match Communities
+ping X.X.X.X routing-instance &lt;VRF&gt; source X.X.X.X</pre>
+</div>
+
+<div class="section piege">
+<h4>⚠️ PIÈGE Ping global vs VRF</h4>
+<div class="piege-box">
+Quand interface ge-X est dans une VRF, <code>ping X.X.X.X</code> standard → "No route to host".<br>
+<em>Fix</em> : <code>ping X.X.X.X routing-instance &lt;VRF&gt;</code>
+</div>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>VPLS — BGP-signaled (Kompella)</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">site-identifier</span>
+<span class="keyword">no-tunnel-services</span>
+<span class="keyword">vlan-id none</span>
+<span class="keyword">encapsulation vlan-vpls</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts VPLS</h4>
+<ul>
+<li><strong>BGP-VPLS</strong> (RFC 4761) = signalisation BGP-l2vpn pour discovery+labels</li>
+<li><strong>Site-identifier</strong> unique par PE dans la VPLS instance</li>
+<li><strong>Site-range</strong> = capacité d'ajouter d'autres sites</li>
+<li><strong>vlan-id none</strong> au niveau instance = strip le tag VLAN avant transport MPLS</li>
+<li><strong>no-tunnel-services</strong> = pas besoin de PIC tunnel</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>🔧 Config VPLS (S3.6)</h4>
+<pre>set interfaces ge-X vlan-tagging
+set interfaces ge-X encapsulation flexible-ethernet-services
+set interfaces ge-X unit 100 encapsulation vlan-vpls
+set interfaces ge-X unit 100 vlan-id 100
+
+set routing-instances GREEN instance-type vpls
+set routing-instances GREEN protocols vpls site PEX site-identifier X
+set routing-instances GREEN protocols vpls site-range 10
+set routing-instances GREEN protocols vpls no-tunnel-services
+set routing-instances GREEN vlan-id none
+set routing-instances GREEN interface ge-X.100
+set routing-instances GREEN route-distinguisher 10.220.1.X:200
+set routing-instances GREEN vrf-target target:65001:200</pre>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications VPLS</h4>
+<pre>show vpls connections instance GREEN
+show vpls mac-table instance GREEN
+show route table bgp.l2vpn.0
+show route table GREEN.l2vpn.0
+show l2vpn connections</pre>
+</div>
+
+<div class="section trick">
+<h4>💡 BUM filter (S3.7)</h4>
+<div class="trick-box">
+Limiter Broadcast/Unknown-unicast/Multicast à X Mbps :
+<pre>set firewall policer VPLS-1M if-exceeding bandwidth-limit 1m
+set firewall policer VPLS-1M then discard
+set firewall family vpls filter BUM term 1 from traffic-type broadcast
+set firewall family vpls filter BUM term 1 from traffic-type multicast
+set firewall family vpls filter BUM term 1 from traffic-type unknown-unicast
+set firewall family vpls filter BUM term 1 then policer VPLS-1M
+set firewall family vpls filter BUM term 1 then accept
+set interfaces ge-X unit 100 family vpls filter input BUM</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>EVPN — Multi-Homing & DF</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">ESI</span>
+<span class="keyword">all-active</span>
+<span class="keyword">DF election</span>
+<span class="keyword">LACP</span>
+<span class="keyword">vlan-bridge</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts EVPN</h4>
+<ul>
+<li><strong>ESI</strong> = Ethernet Segment Identifier — 10 octets, identique sur les PE multi-homed</li>
+<li><strong>all-active</strong> = unicast forwardé par tous les PE → load-balance</li>
+<li><strong>DF</strong> (Designated Forwarder) = 1 seul PE pour BUM (évite duplication)</li>
+<li><strong>Type-1</strong> EVPN route = ES + ESI advertising</li>
+<li><strong>Type-2</strong> = MAC/IP advertising</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>🔧 Multi-homed PE (S3.9 - identique sur PE3 et PE7)</h4>
+<pre>set chassis aggregated-devices ethernet device-count 1
+set interfaces ge-X gigether-options 802.3ad ae20
+set interfaces ae20 flexible-vlan-tagging
+set interfaces ae20 native-vlan-id 100
+set interfaces ae20 encapsulation flexible-ethernet-services
+set interfaces ae20 esi 00:00:00:00:00:00:00:00:10:00
+set interfaces ae20 esi all-active
+set interfaces ae20 aggregated-ether-options lacp active
+set interfaces ae20 aggregated-ether-options lacp periodic fast
+set interfaces ae20 aggregated-ether-options lacp system-id 00:00:00:00:00:01
+set interfaces ae20 unit 100 encapsulation vlan-bridge
+set interfaces ae20 unit 100 vlan-id 100
+
+set routing-instances PURPLE instance-type evpn
+set routing-instances PURPLE protocols evpn interface ae20.100
+set routing-instances PURPLE vlan-id none
+set routing-instances PURPLE interface ae20.100
+set routing-instances PURPLE route-distinguisher 10.220.1.X:100
+set routing-instances PURPLE vrf-target target:65001:100</pre>
+</div>
+
+<div class="section trick">
+<h4>💡 DF election par preference (S3.10)</h4>
+<div class="trick-box">
+Force un PE spécifique comme DF :
+<pre># Sur PE non-DF
+set interfaces ae20 esi df-election-type preference value 1
+
+# Sur PE DF souhaité
+set interfaces ae20 esi df-election-type preference value 2
+
+# Valeur la plus haute gagne (DF election RFC 8584)</pre>
+</div>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications EVPN</h4>
+<pre>show evpn instance PURPLE extensive
+show evpn instance PURPLE designated-forwarder
+show evpn mac-table instance PURPLE
+show route table bgp.evpn.0
+show lacp interfaces ae20</pre>
+</div>
+
+<div class="section piege">
+<h4>⚠️ Pièges EVPN multi-homing</h4>
+<div class="piege-box">
+<strong>ESI ou LACP system-id différents</strong> entre les 2 PE → multi-homing brisé, CE voit 2 LAGs séparés.<br>
+<em>Règle</em> : ESI ET <code>lacp system-id</code> IDENTIQUES sur les 2 PE.
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ===========  IPv6 / 6PE / Inter-AS TAB =========== -->
+<div class="tab-content" data-content="ipv6">
+<div class="domain-grid">
+
+<div class="domain-card expanded">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>6PE — IPv6 over MPLS IPv4</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">ipv6-tunneling</span>
+<span class="keyword">::ffff:</span>
+<span class="keyword">inet6.3</span>
+<span class="keyword">labeled-unicast</span>
+<span class="keyword">RFC 4798</span>
+</div>
+
+<div class="section">
+<h4>📋 Les 3 piliers du 6PE</h4>
+<ul>
+<li><strong>1. mpls ipv6-tunneling</strong> — crée la table inet6.3 (lookup IPv6 → label)</li>
+<li><strong>2. LSP RSVP IPv4</strong> entre les 2 PE (transporte les paquets IPv6)</li>
+<li><strong>3. Next-hop IPv4-mapped IPv6</strong> (<code>::ffff:&lt;ipv4&gt;</code>) — résout via inet.3</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>🔧 Config 6PE (S2.9)</h4>
+<pre># Sur les 2 PE (PE2 et PE6 dans le lab)
+set protocols mpls ipv6-tunneling
+
+# Policy export-rr pour next-hop IPv4-mapped IPv6
+set policy-options policy-statement export-rr term ipv6 from family inet6
+set policy-options policy-statement export-rr term ipv6 then next-hop ::ffff:10.220.1.X
+set policy-options policy-statement export-rr term ipv6 then accept
+
+# LSP RSVP entre les 2 PE
+set protocols mpls label-switched-path TO-PEX to 10.220.1.X
+set protocols mpls label-switched-path TO-PEX primary TO-PEX
+
+# Family BGP labeled-unicast
+set protocols bgp group rr family inet6 labeled-unicast explicit-null</pre>
+</div>
+
+<div class="section piege">
+<h4>⚠️ Pièges 6PE du lab</h4>
+<div class="piege-box">
+<strong>Piège AS</strong> : PE6 baseline avait <code>peer-as 64588</code> mais CE8 = AS 64533.<br>
+<em>Fix</em> : <code>replace pattern 64588 with 64533</code>
+</div>
+<div class="piege-box">
+<strong>Piège subnet IPv6</strong> : PE6 avait <code>2001:db8:104:1::1/127</code> mais CE8 = <code>2001:db8:104::/127</code>.<br>
+<em>Fix</em> : <code>replace pattern 2001:db8:104:1::1/127 with 2001:db8:104::1/127</code>
+</div>
+<div class="piege-box">
+<strong>as-override requis</strong> si CE5 et CE8 partagent le même AS → sinon AS-loop detection drop.
+</div>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications 6PE</h4>
+<pre>show route table inet6.0
+show route table inet6.3                 # LSP IPv6 vers PE distants
+show mpls lsp name TO-PEX detail
+show bgp summary | match inet6
+show bgp neighbor X.X.X.X | match "inet6"</pre>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>Inter-AS L3VPN (A / B / C)</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">Option A</span>
+<span class="keyword">Option B</span>
+<span class="keyword">Option C</span>
+<span class="keyword">inet labeled-unicast</span>
+<span class="keyword">inet-vpn</span>
+</div>
+
+<div class="section">
+<h4>📋 3 options Inter-AS</h4>
+<ul>
+<li><strong>A</strong> = VRF-to-VRF back-to-back, eBGP IPv4 dans VRF</li>
+<li><strong>B</strong> = ASBR échangent labels VPN (eBGP labeled-unicast + inet-vpn)</li>
+<li><strong>C</strong> = multi-hop eBGP PE-PE avec ASBR transparent</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>🔧 Migration Option A → Option B (S3.1)</h4>
+<pre># Sur ASBR (ex: PE6, PE7, PE8, PE9)
+delete routing-instances BLUE interface ge-0/0/3.200
+delete routing-instances BLUE protocols bgp group to-pe6
+set interfaces ge-0/0/3.200 family mpls
+set protocols mpls interface ge-0/0/3.200
+
+# Nouvelle session EBGP labeled
+set protocols bgp group INTER-OPTION-B type external
+set protocols bgp group INTER-OPTION-B local-address 192.168.X.Y
+set protocols bgp group INTER-OPTION-B family inet labeled-unicast
+set protocols bgp group INTER-OPTION-B family inet-vpn unicast
+set protocols bgp group INTER-OPTION-B export send-blue
+set protocols bgp group INTER-OPTION-B neighbor 192.168.X.Z peer-as 6500X
+
+# Policy export
+set policy-options policy-statement send-blue term 1 from family inet-vpn
+set policy-options policy-statement send-blue term 1 then accept</pre>
+</div>
+
+<div class="section piege">
+<h4>⚠️ Pièges Inter-AS</h4>
+<div class="piege-box">
+<strong>family mpls oublié</strong> sur interface inter-ASBR → labels MPLS pas transportés.
+</div>
+<div class="piege-box">
+<strong>OSPF interface-type p2p</strong> manquant côté PE pour CE OSPF /31 → pas d'adjacence.
+</div>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications Inter-AS</h4>
+<pre>show route table bgp.l3vpn.0
+show bgp summary | match INTER-OPTION-B
+show route receive-protocol bgp X.X.X.X table bgp.l3vpn.0
+ping X.X.X.X routing-instance BLUE source X.X.X.X
+show mpls lsp                          # LSP entre ASBR</pre>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ===========  CoS / Sécurité TAB =========== -->
+<div class="tab-content" data-content="cos">
+<div class="domain-grid">
+
+<div class="domain-card expanded">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>CoS — Pipeline complet</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">classify</span>
+<span class="keyword">queue</span>
+<span class="keyword">schedule</span>
+<span class="keyword">rewrite</span>
+<span class="keyword">policer</span>
+</div>
+
+<div class="section">
+<h4>📋 Pipeline CoS</h4>
+<ul>
+<li><strong>Classify</strong> → BA (DSCP/EXP) ou MF (firewall filter) → forwarding-class</li>
+<li><strong>Queue</strong> → 4 queues default (best-effort, expedited, assured, network-control)</li>
+<li><strong>Schedule</strong> → priority (strict-high, high, medium-high, low)</li>
+<li><strong>Rewrite</strong> → réécriture DSCP / EXP en sortie</li>
+</ul>
+</div>
+
+<div class="section">
+<h4>🔧 MF Classifier (S2.18)</h4>
+<pre>set firewall family inet filter CE11-VOICE term VOICE from source-address 192.168.113.1/32
+set firewall family inet filter CE11-VOICE term VOICE then forwarding-class voice
+set firewall family inet filter CE11-VOICE term VOICE then accept
+set firewall family inet filter CE11-VOICE term DEFAULT then accept
+set interfaces ge-X unit 0 family inet filter input CE11-VOICE</pre>
+</div>
+
+<div class="section">
+<h4>🔧 Scheduler + Map (S2.19)</h4>
+<pre>set class-of-service schedulers voice transmit-rate percent 10
+set class-of-service schedulers voice buffer-size percent 10
+set class-of-service schedulers voice priority strict-high
+
+set class-of-service scheduler-maps MAP forwarding-class voice scheduler voice
+# ... autres FC
+
+set class-of-service interfaces ge-X scheduler-map MAP</pre>
+</div>
+
+<div class="section">
+<h4>🔧 EXP Rewrite (S2.20)</h4>
+<pre># Marquer voice → EXP 010 (=2)
+set class-of-service rewrite-rules exp voice-rewrite forwarding-class voice loss-priority low code-point 010
+set class-of-service interfaces ge-X unit 0 rewrite-rules exp voice-rewrite</pre>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications CoS</h4>
+<pre>show class-of-service interface ge-X
+show class-of-service scheduler-map MAP
+show interfaces queue ge-X
+show firewall filter NAME detail</pre>
+</div>
+
+<div class="section trick">
+<h4>💡 Priority strict-high vs high</h4>
+<div class="trick-box">
+<strong>strict-high</strong> = absolument prioritaire (peut starver les autres si pas de rate-limit)<br>
+<strong>high</strong> = prioritaire mais cohabite (weighted)<br>
+<em>Voice prioritized "before others"</em> → utiliser <strong>strict-high</strong> + transmit-rate
+</div>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>RE-Protect / Firewall Filters</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">lo0 filter</span>
+<span class="keyword">apply-path</span>
+<span class="keyword">prefix-list</span>
+<span class="keyword">term ordering</span>
+</div>
+
+<div class="section">
+<h4>📋 Concepts RE-Protect</h4>
+<ul>
+<li>Filter <code>family inet</code> appliqué <code>input</code> sur lo0.0 → protège le RE</li>
+<li>Ordre des terms IMPORTANT (séquentiel, premier match gagne)</li>
+<li>Term final = DEFAULT discard (avec syslog)</li>
+<li>Prefix-list avec <code>apply-path</code> = auto-population dynamique</li>
+</ul>
+</div>
+
+<div class="section piege">
+<h4>⚠️ Piège critique BGP-Allow-VRF vide</h4>
+<div class="piege-box">
+S1.1 utilise <code>source-prefix-list BGP-Allow-VRF</code> dans le term bgp-allow.<br>
+<strong>Si BGP-Allow-VRF n'a pas d'apply-path</strong> → vide → BGP VRF bloqué !<br>
+<em>Fix</em> :
+<pre>set policy-options prefix-list BGP-Allow-VRF apply-path "routing-instances &lt;*&gt; protocols bgp group &lt;*&gt; neighbor &lt;*&gt;"</pre>
+</div>
+</div>
+
+<div class="section">
+<h4>🔧 Insert pour ordre des terms</h4>
+<pre># Insère gRPC AVANT DEFAULT (S1.3)
+insert firewall family inet filter re-protect term gRPC before term DEFAULT</pre>
+</div>
+
+<div class="section verify">
+<h4>✅ Vérifications filtre</h4>
+<pre>show configuration firewall family inet filter re-protect
+show firewall filter re-protect
+show firewall counter re-protect
+show policy-options prefix-list BGP-Allow
+show policy-options prefix-list BGP-Allow-VRF</pre>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>SNMPv3 / IPFIX / Syslog</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">authentication-sha</span>
+<span class="keyword">authNoPriv</span>
+<span class="keyword">inline-jflow</span>
+<span class="keyword">explicit-priority</span>
+</div>
+
+<div class="section">
+<h4>🔧 SNMPv3 SHA sans chiffrement (S1.4)</h4>
+<pre>set snmp name HOSTNAME
+set snmp v3 usm local-engine user SNMPJNCIE authentication-sha authentication-password "X"
+set snmp v3 vacm access group X default-context-prefix security-model usm security-level authentication read-view Y
+# security-level = authentication = authNoPriv (auth mais pas chiffré)</pre>
+</div>
+
+<div class="section">
+<h4>🔧 IPFIX inline-jflow IPv6 (S1.5)</h4>
+<pre>set forwarding-options sampling instance jncie input rate 10000
+set forwarding-options sampling instance jncie family inet6 output flow-server X.X.X.X port 43434
+set forwarding-options sampling instance jncie family inet6 output flow-server X.X.X.X source-address 10.220.1.X
+set forwarding-options sampling instance jncie family inet6 output flow-server X.X.X.X version-ipfix template jncie_ipfix
+set forwarding-options sampling instance jncie family inet6 output inline-jflow source-address 10.220.1.X
+set services flow-monitoring version-ipfix template jncie_ipfix ipv6-template
+set chassis fpc 0 sampling-instance jncie
+set interfaces ge-X unit N family inet6 sampling input
+set interfaces ge-X unit N family inet6 sampling output</pre>
+</div>
+
+<div class="section">
+<h4>🔧 Syslog avec explicit-priority (S1.6)</h4>
+<pre>set system syslog host X.X.X.X source-address 10.220.1.X
+set system syslog host X.X.X.X any notice
+set system syslog host X.X.X.X structured-data       # RFC 5424
+set system syslog host X.X.X.X explicit-priority     # Niveau dans le message</pre>
+</div>
+
+<div class="section trick">
+<h4>💡 Tricks système</h4>
+<div class="trick-box">
+<strong>SNMPv3 levels</strong> :<br>
+- <code>noAuthNoPriv</code> = pas d'auth, pas de crypto<br>
+- <code>authNoPriv</code> = auth SHA/MD5, pas de crypto<br>
+- <code>authPriv</code> = auth + crypto AES/DES
+</div>
+<div class="trick-box">
+<strong>inline-jflow</strong> = export depuis l'ASIC (pas de RE punt) → scalable
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- ===========  Tricks Junos & EVE-NG TAB =========== -->
+<div class="tab-content" data-content="ops">
+<div class="domain-grid">
+
+<div class="domain-card expanded">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>Junos CLI — Tricks essentiels</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">commit confirmed</span>
+<span class="keyword">rollback</span>
+<span class="keyword">load set terminal</span>
+<span class="keyword">replace pattern</span>
+<span class="keyword">show | compare</span>
+</div>
+
+<div class="section">
+<h4>💡 Workflow safe commit</h4>
+<pre>commit check                     # Validation syntaxique
+commit confirmed 5               # Rollback auto si pas commit dans 5 min
+commit                           # Confirme
+rollback 0                       # Annule candidate
+rollback N                       # Revient à N commits avant</pre>
+</div>
+
+<div class="section">
+<h4>💡 Diff & comparaison</h4>
+<pre>show | compare                   # diff candidate vs committed
+show | compare rollback 1        # diff entre 2 commits
+show | display set               # config en format flat
+show | display set | match X     # filter</pre>
+</div>
+
+<div class="section">
+<h4>💡 Loading config</h4>
+<pre>load set terminal                # paste commands depuis stdin
+[paste]
+[Ctrl+D]
+
+load override /var/tmp/file      # replace entire config
+load merge /var/tmp/file         # merge with existing
+load patch /var/tmp/file         # apply patch
+</pre>
+</div>
+
+<div class="section">
+<h4>💡 Replace pattern (global rename)</h4>
+<pre>edit policy-options policy-statement REJECT_BAD_COMMUNITIES
+replace pattern OLD_NAME with NEW_NAME
+top
+
+# Ou en global
+replace pattern 64588 with 64533
+replace pattern 2001:db8:104:1::1/127 with 2001:db8:104::1/127</pre>
+</div>
+
+<div class="section">
+<h4>💡 Naviguer config</h4>
+<pre>edit protocols bgp group rr      # entre dans le hierarchy
+up                               # remonte d'un niveau
+top                              # revient au root
+show                             # show depuis position actuelle
+exit                             # quitte mode config (avec save?)
+quit                             # quitte sans save</pre>
+</div>
+
+<div class="section">
+<h4>💡 Prompt indicators</h4>
+<pre>root@:~ #          → FreeBSD shell (avant cli)
+root@HOST&gt;         → CLI mode op (show, ping)
+root@HOST#         → CLI mode config (set, delete)
+
+# Naviguer
+shell → cli        : cli
+cli → config       : configure (ou edit)
+config → cli       : exit
+cli → shell        : start shell</pre>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>EVE-NG — Pièges & Mapping vMX</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+<div class="keywords">
+<span class="keyword">em mapping</span>
+<span class="keyword">paste corruption</span>
+<span class="keyword">paste delay</span>
+<span class="keyword">SCP load</span>
+</div>
+
+<div class="section">
+<h4>📋 vMX EVE-NG mapping (CRITIQUE)</h4>
+<ul>
+<li><code>em0</code> = fxp0 (mgmt)</li>
+<li><code>em1</code> = internal (pas utilisé)</li>
+<li><code>em2</code> = <strong>ge-0/0/0</strong> (premier dataport)</li>
+<li><code>em3</code> = <strong>ge-0/0/1</strong></li>
+<li><code>em4</code> = <strong>ge-0/0/2</strong></li>
+<li><code>em5</code> = <strong>ge-0/0/3</strong></li>
+<li><code>em6</code> = <strong>ge-0/0/4</strong></li>
+<li><code>em7</code> = <strong>ge-0/0/5</strong></li>
+</ul>
+</div>
+
+<div class="section piege">
+<h4>⚠️ PIÈGE Layer 2 cassé EVE-NG</h4>
+<div class="piege-box">
+Symptôme : interface UP/UP mais ping fail, ARP vide.<br>
+Cause : config sur <code>ge-0/0/2</code> mais EVE-NG câble sur <code>em6</code> (= ge-0/0/4).<br>
+<em>Diagnostic</em> : hover sur le lien EVE-NG → voir le mapping em ↔ ge.<br>
+<em>Fix</em> : adapter la config à la VRAIE interface câblée.
+</div>
+</div>
+
+<div class="section piege">
+<h4>⚠️ PIÈGE Paste corruption vMX</h4>
+<div class="piege-box">
+Symptôme : <code>interface → interset</code>, hashes password tronqués, "syntax error" sur lignes spécifiques.<br>
+Cause : buffer série vMX EVE-NG dépassé.<br>
+<em>Fix</em> : Paste delay SecureCRT :
+<pre>Options → Session Options → Terminal → Emulation
+  Line send delay : 100 ms
+  Character send delay : 10 ms</pre>
+</div>
+</div>
+
+<div class="section trick">
+<h4>💡 Workflow push config par blocs</h4>
+<div class="trick-box">
+1. Configure <strong>paste delay</strong> dans SecureCRT (Line 100ms, Char 10ms)<br>
+2. Split fichier en <strong>blocs ≤ 18 lignes</strong> (testé safe)<br>
+3. PowerShell pour préparer clipboard :
+<pre>$lines = Get-Content "X.txt" | Where-Object { $_ -match '^\s*set\s' }
+$lines[0..17] -join "`n" | Set-Clipboard</pre>
+4. Sur Junos : <code>load set terminal</code> + paste + Ctrl+D<br>
+5. <code>commit check</code> entre chaque bloc → détecte la corruption tôt
+</div>
+</div>
+
+<div class="section trick">
+<h4>💡 Alternative SCP + load set</h4>
+<div class="trick-box">
+Si paste impossible/risqué :
+<pre># Sur Junos
+file copy scp://user@host/path/file.conf /var/tmp/file.conf
+load set /var/tmp/file.conf
+commit</pre>
+Plus fiable que le paste interactif.
+</div>
+</div>
+</div>
+</div>
+
+<div class="domain-card">
+<div class="domain-header" onclick="toggleCard(this)">
+<h3>Diagnostic Flowchart — "Le truc ne marche pas"</h3>
+<span class="arrow">▶</span>
+</div>
+<div class="domain-body">
+
+<div class="section">
+<h4>🔍 BGP pas Established</h4>
+<pre>1. ping X.X.X.X (L3 connectivity)
+2. ping X.X.X.X routing-instance VRF (si VRF)
+3. show route X.X.X.X (IGP résolution)
+4. show bgp neighbor X.X.X.X (détails)
+5. show interfaces &lt;face&gt; terse (UP/UP ?)
+6. show arp interface &lt;face&gt; (ARP populée ?)
+7. EVE-NG : check em mapping (port physique)
+8. Check filtre lo0 (BGP-Allow / BGP-Allow-VRF)
+9. Check ASN (peer-as match)
+10. Check TCP-AO keys (send-id/recv-id)</pre>
+</div>
+
+<div class="section">
+<h4>🔍 Pas de routes VPN</h4>
+<pre>1. show bgp summary (sessions UP ?)
+2. show route table bgp.l3vpn.0 (routes reçues ?)
+3. show route table bgp.l3vpn.0 hidden (cause "Unusable") 
+4. show route table &lt;VRF&gt;.inet.0 (routes actives ?)
+5. show route table inet.3 (LSP vers next-hop ?)
+6. Check vrf-import / vrf-export (filtre policy)
+7. Check RT match (communities target)
+8. Check resolution-ribs (cas RR sans MPLS)</pre>
+</div>
+
+<div class="section">
+<h4>🔍 IS-IS adjacence DOWN</h4>
+<pre>1. show isis adjacency (toutes UP ?)
+2. show isis interface (interfaces ISIS-enabled ?)
+3. show configuration interfaces &lt;face&gt; | match "family iso"
+4. show configuration interfaces &lt;face&gt; | match mtu
+5. show configuration interfaces lo0 | match iso (NET défini ?)
+6. show isis database | match &lt;system-id&gt; (NET unique ?)
+7. monitor traffic interface &lt;face&gt; matching "isis"</pre>
+</div>
+
+<div class="section">
+<h4>🔍 MPLS LSP DOWN</h4>
+<pre>1. show mpls lsp name &lt;NAME&gt;
+2. show mpls lsp name &lt;NAME&gt; detail
+3. show ted database admin-groups (couleurs présentes ?)
+4. show route 10.220.1.X protocol isis (IGP reachability)
+5. show route table inet.3 10.220.1.X
+6. traceroute 10.220.1.X
+7. Check admin-groups sur les interfaces transit
+8. Check path strict (hops bien définis)</pre>
+</div>
+
+<div class="section">
+<h4>🔍 Routes hidden</h4>
+<pre>1. show route table bgp.l3vpn.0 hidden extensive
+2. Chercher : "Unusable" → next-hop unresolvable
+3. Chercher : "rejected by import policy" → policy
+4. Chercher : "AS loop" → as-override
+5. Chercher : "MED inferior" → normal alternate path
+6. Vérifier inet.3 si Unusable (LSP manquant ?)</pre>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<footer>
+<p><strong>JNCIE-SP Cheat Sheet</strong> — Hafedh El Founi · v1.0 · Lab JNCIE-SP-962</p>
+<p>Inspiré du format de <a href="https://karimchazze.github.io/juniper-mindmaps/" style="color: var(--accent);">karimchazze.github.io/juniper-mindmaps</a></p>
+<p>15 domaines · Verifications · Tricks · Pièges identifiés sur le lab</p>
+</footer>
+
+</div>
+
+<script>
+function toggleCard(header) {
+  header.parentElement.classList.toggle('expanded');
+}
+function openAll() {
+  document.querySelectorAll('.domain-card').forEach(c => c.classList.add('expanded'));
+}
+function closeAll() {
+  document.querySelectorAll('.domain-card').forEach(c => c.classList.remove('expanded'));
+}
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelector(`[data-content="${tab.dataset.tab}"]`).classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
